@@ -51,7 +51,6 @@ public class Main extends Application {
     }
     @Override
     public void start(final Stage primaryStage) {
-
         Button inputParamButton = new Button();
         inputParamButton.setText("Input param");
         Label labelForOutputFlours = new Label();
@@ -88,9 +87,7 @@ public class Main extends Application {
         primaryStage.setTitle("Lift");
         primaryStage.setScene(scene);
         primaryStage.show();
-
         inputParamButton.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
                 building.launchLifts();
@@ -100,13 +97,10 @@ public class Main extends Application {
                 Scene scene = new Scene(root);
                 VBox stages_requests_info_container = new VBox();
                 VBox info = new VBox();
-                //TextField textField1 = new TextField();
-                //textField1.setPrefColumnCount(5);
                 textField1Parsed = Integer.parseInt(textFieldFlours.getText());
                 textField2Parsed = Integer.parseInt(textFieldLifts.getText());
                 textField3Parsed = Integer.parseInt(textFieldPeople.getText());
                 textField4Parsed = Integer.parseInt(textFieldCapacity.getText());
-
                 root.getChildren().addAll(stages_requests_info_container); //textField1);
                 for (int i = num_stages + 1; i >= 0; i--) {
                     String s = "Количество заявок на этаже №" + i + ":  " + 0;
@@ -116,9 +110,7 @@ public class Main extends Application {
                     stage_label.setFont(new Font(14));
                     stages_requests_info_container.getChildren().add(stage_label);
                 }
-
                 for (int i = 0; i < num_lifts; i++) {
-
                     Slider slider = new Slider();
                     sliders.add(slider);
                     root.getChildren().add(slider);
@@ -132,20 +124,13 @@ public class Main extends Application {
                     slider.setMinHeight(500);
                     slider.applyCss();
                     slider.layout();
-
                     Pane thumb = (Pane) slider.lookup(".thumb");
                     Label label = new Label();
                     lift_labels.add(label);
-
                     thumb.getChildren().add(label);
-
                 }
-
                 Button stopButton = new Button("STOP");
-
-                //stopButton.setOnAction(event1 -> stages_requests_info_container.getChildren().addAll(stage_label, stage_label2));
                 stages_requests_info_container.getChildren().add(stopButton);
-
                 Thread thread = new Thread(() -> {
                     try {
 
@@ -162,36 +147,30 @@ public class Main extends Application {
                 thread.start();
                 primaryStage.setScene(scene);
                 primaryStage.show();
-
                 stopButton.setOnAction(new EventHandler<ActionEvent>() {
-
                     @Override
                     public void handle(ActionEvent event) {
                         HBox root2 = new HBox();
                         Scene scene2 = new Scene(root2, 250, 120);
                         VBox stats = new VBox();
                         root2.getChildren().addAll(stats);
-                        String stopMessage = "Amount of Trips: ";
-                        String stopMessage2 = "Amount of empty Trips: ";
-                        Label stage_label = new Label(stopMessage + " " + emptyCounter);
-                        Label stage_label2 = new Label(stopMessage2 + " " + counter);
-                        stages_labels.add(stage_label);
-                        stages_labels.add(stage_label2);
-                        stage_label.setMinWidth(250);
-                        stage_label.setFont(new Font(14));
-                        stage_label2.setFont(new Font(14));
-                        stats.getChildren().addAll(stage_label, stage_label2);
+                        Label tripsLabel = new Label("Amount of Trips: " + counter);
+                        Label emptyTripsLabel = new Label("Amount of empty Trips: " + emptyCounter);
+                        stages_labels.add(tripsLabel);
+                        stages_labels.add(emptyTripsLabel);
+                        tripsLabel.setMinWidth(250);
+                        tripsLabel.setFont(new Font(14));
+                        emptyTripsLabel.setFont(new Font(14));
+                        stats.getChildren().addAll(tripsLabel, emptyTripsLabel);
+                        Button stopButton = new Button("OK");
+                        stats.getChildren().add(stopButton);
+                        stopButton.setOnAction(event1 -> System.exit(0));
                         primaryStage.setScene(scene2);
                         primaryStage.show();
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+
                     }
                 });
             }
-
             public void updateUi(){
                 for (int i = 0; i < num_stages; i++){
                     String s = "Количество заявок на этаже №" + i + ":  " + building.getStage(i).waitersNum();
@@ -201,9 +180,7 @@ public class Main extends Application {
                     ElevatorUIData data = building.lifts_array.get(i).getReferencesForUI();
                     sliders.get(i).setValue(data.stage_num);
                     counter = data.amountOfTrips;
-
                     String trips = "Количество поездок = " + counter;
-
                     lift_labels.get(i).setText(String.valueOf(data.passenger_num));
                     stages_labels.get(num_lifts + 4).textProperty().setValue(trips);
 
@@ -218,17 +195,14 @@ public class Main extends Application {
         });
 
     }
-
     @Override
     public void stop() throws Exception {
         super.stop();
         Platform.exit();
         System.exit(0);
     }
-
     public static void main(String[] args) {
         Application.launch();
 
     }
-
 }
